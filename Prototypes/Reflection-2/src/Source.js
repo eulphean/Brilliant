@@ -27,9 +27,9 @@ class Source {
     draw() {
         // Draw the source
         push();
-        translate(this.pos.x, this.pos.y);
-        fill("red");
-        ellipse(0, 0, SOURCE_RAD, SOURCE_RAD);
+          translate(this.pos.x, this.pos.y);
+          fill("red");
+          ellipse(0, 0, SOURCE_RAD, SOURCE_RAD);
         pop();
 
         // Draw all the rays
@@ -42,7 +42,7 @@ class Source {
     }
 
     cast(mirror) {
-      this.rays.forEach(r => r.cast(mirror, 0));
+      this.rays.forEach(r => r.cast(mirror, null, 0));
     }
 }
   

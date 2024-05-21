@@ -8,6 +8,7 @@ class Mirror {
     constructor(startX, startY, endX, endY){
       this.startPos = createVector(startX, startY);
       this.endPos = createVector(endX, endY);
+      this.hasHit = false;
     }
     
     draw(){
@@ -19,6 +20,8 @@ class Mirror {
     }
 
     reflect(curRay) {
+      this.hasHit = true; 
+
       // The point where the new ray begins.
       const startPoint = curRay.hitpoint;
       
