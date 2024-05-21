@@ -6,15 +6,20 @@
 class Observer {
     constructor(posX, posY) {
         this.pos = createVector(posX, posY);
-        this.collisionDiameter = 10
         this.isActive = false;
+        this.collisionDiameter = 0; 
     }
 
     draw() {
+        this.collisionDiameter = GUI_PARAMS.observerRadius * 2; 
         push();
             fill("magenta");
             // Render an ellipse around the collision diameter.
-            ellipse(this.pos.x, this.pos.y, this.collisionDiameter * 2, this.collisionDiameter);
+            ellipse(this.pos.x, this.pos.y, this.collisionDiameter, this.collisionDiameter/2);
         pop();
+    }
+
+    updatePosition(newX, newY) {
+        this.pos.set(newX, newY);
     }
 }

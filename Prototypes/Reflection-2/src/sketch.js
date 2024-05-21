@@ -16,12 +16,13 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // Create a mirror that will reflect the rays.
-  const mirrorA = new Mirror(width/2 + 100, height/2 - 100, width/2 + 100, height/2 + 100);
-  const mirrorB = new Mirror(width/2 - 100, height/2 - 100, width/2 - 100, height/2 + 100);
+  const mirrorA = new Mirror(50, 50, 75);
+  const mirrorB = new Mirror(-50, 50, 75);
   mirrors.push(mirrorA);
   mirrors.push(mirrorB);
 
   observer = new Observer(width/2, height/2 + 100);
+  source = new Source(width/2, height/2);
   gui = new Gui();
 }
 
@@ -52,16 +53,25 @@ function windowResized() {
   resizeCanvas(windowWidth, windowHeight);
 }
 
-function mouseClicked() {
-  if (!source) {
-    source = new Source(mouseX, mouseY);
-  } else {
-    source.updatePosition(mouseX, mouseY);
-  }
+function mousePressed() {
+  // Check if I collided with the source or with the observer.
+  const mouse = createVector(mouseX, mouseY);
+  
+  // Did we select the source radius?
+  const hitSource = collidePointCircleVector(mouse, source.pos, GUI_PARAMS.sourceRadius * 2);
+  source.isActive = hitSource;
+
+  // Did we select the observer?
+  const hitObserver = collidePointCircleVector(mouse, observer.pos, GUI_PARAMS.observerRadius * 2);
+  observer.isActive = hitObserver;
 }
 
 function mouseDragged() {
-  if (source) {
+  if (source.isActive) {
     source.updatePosition(mouseX, mouseY);
+  }
+
+  if (observer.isActive) {
+    observer.updatePosition(mouseX, mouseY);
   }
 }

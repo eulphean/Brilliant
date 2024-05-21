@@ -5,11 +5,12 @@
 
 const GUI_PARAMS = {
     title: 'Reflection Controls',
+    maxSubrays: 2,
+    rayDensity: 10,
     rayLength: 30,
-    numRays: 10,
-    sourceRadius: 20,
+    sourceRadius: 10,
+    observerRadius: 10,
     hitpointRadius: 5,
-    maxSubrays: 2
 }
 
 class Gui {
@@ -17,9 +18,10 @@ class Gui {
         this.gui = new dat.GUI();
         this.gui.add(GUI_PARAMS, 'title');
         this.gui.add(GUI_PARAMS, 'rayLength', 5, 100).step(1);
-        this.gui.add(GUI_PARAMS, 'numRays', 1, 50).step(1);
+        this.gui.add(GUI_PARAMS, 'rayDensity', 1, 50).step(1);
         this.gui.add(GUI_PARAMS, 'sourceRadius', 5, 50);
-        this.gui.add(GUI_PARAMS, 'hitpointRadius', 5, 10);
+        this.gui.add(GUI_PARAMS, 'observerRadius', 5, 50);
+        this.gui.add(GUI_PARAMS, 'hitpointRadius', 1, 10);
         this.gui.add(GUI_PARAMS, 'maxSubrays', 1, 10).step(1);
     }
 }

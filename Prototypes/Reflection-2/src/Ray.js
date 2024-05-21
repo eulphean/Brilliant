@@ -15,8 +15,6 @@ class Ray {
   }
 
   cast(mirrors, observer, prevMirror, prevDist, subcalls) {
-    // Store the distance already travelled by the ray.
-    //this.dist = prevDist; 
     // Cast this ray onto the mirror, which means if this ray collides with the mirror. 
     // NOTE: We create a really long line in the "direction" of the ray to supply to the collision API
     const endPos = this.heading.copy();
@@ -50,6 +48,7 @@ class Ray {
     const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.collisionDiameter, true);
     if (hitObserver) {
       this.observerPoint.set(observer.pos.x, observer.pos.y);
+      console.log('observer hit');
       this.dist = prevDist;
       return;   
     }
@@ -64,7 +63,7 @@ class Ray {
       this.drawHit();
       this.drawObserver();
       this.drawVirtualImages();
-      // this.updateObserverImages();
+      //this.updateObserverImages();
       this.drawRay();
       this.drawSubray();
   }

@@ -5,9 +5,9 @@
 // a stroke to it. The rays intersect with this object and reflects. 
 
 class Mirror {
-    constructor(startX, startY, endX, endY){
-      this.startPos = createVector(startX, startY);
-      this.endPos = createVector(endX, endY);
+    constructor(startX, startY, length){
+      this.startPos = createVector(width/2 + startX, height/2 - startY);
+      this.endPos = createVector(width/2 + startX, height/2 + length);
       this.normal = this.calcNormal(); 
     }
     

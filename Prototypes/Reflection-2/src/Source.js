@@ -7,16 +7,21 @@
 class Source {
     constructor(x, y){
       this.pos = createVector(x, y);
+
+      // Create rays
       this.rays = []; 
+      // this.numRays = GUI_PARAMS.rayDensity;
       this.createRays();
+
+      this.diameter = GUI_PARAMS.sourceRadius * 2;
       this.isActive = false;
     }
 
     createRays() {
       // Create an array of rays
       this.rays.length = 0; // Create fresh rays. 
-      const inc = 2 * Math.PI / GUI_PARAMS.numRays;
-      for (let i = 0; i < GUI_PARAMS.numRays; i++) {
+      const inc = 2 * Math.PI / this.numRays;
+      for (let i = 0; i < this.numRays; i++) {
         const angle = inc * i; 
         const r = new Ray (this.pos.x, this.pos.y, angle);
         this.rays.push(r);
@@ -24,19 +29,28 @@ class Source {
     }
     
     draw() {
-        // Draw all the rays
-        this.rays.forEach(r => r.draw());
+      // Update GUI params
+      this.diameter = GUI_PARAMS.sourceRadius * 2;
+      
+      // GUI has changed, create rays again.
+      if (this.numRays !== GUI_PARAMS.rayDensity) { 
+        this.numRays = GUI_PARAMS.rayDensity;
+        this.createRays();
+      }
+      
+      // Draw all the rays
+      this.rays.forEach(r => r.draw());
 
-        // Draw the source
-        push();
-          translate(this.pos.x, this.pos.y);
-          fill("red");
-          ellipse(0, 0, GUI_PARAMS.sourceRadius, GUI_PARAMS.sourceRadius);
-        pop();
+      // Draw the source
+      push();
+        translate(this.pos.x, this.pos.y);
+        fill("red");
+        ellipse(0, 0, this.diameter, this.diameter);
+      pop();
     }
 
-    updatePosition(mouseX, mouseY) {
-      this.pos.set(mouseX, mouseY);
+    updatePosition(newX, newY) {
+      this.pos.set(newX, newY);
       this.createRays();
     }
 
