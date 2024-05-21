@@ -17,5 +17,17 @@ class Mirror {
           line(this.startPos.x, this.startPos.y, this.endPos.x, this.endPos.y);
         pop();
     }
+
+    reflect(curRay) {
+      // The point where the new ray begins.
+      const startPoint = curRay.hitpoint;
+      
+      // Calculate the reflected ray.
+      const r = p5.Vector.reflect(curRay.heading, createVector(1, 0));
+      const heading = r.heading();
+
+      // Create a new ray based on the reflected ray's angle.
+      return new Ray(startPoint.x, startPoint.y, heading);
+    }
   }
   
