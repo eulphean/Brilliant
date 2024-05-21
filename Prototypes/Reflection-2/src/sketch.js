@@ -8,14 +8,17 @@ let source;
 
 // reflecting mirror
 let mirrors = [];
+let observer; 
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // Create a mirror that will reflect the rays.
-  const mirrorA = new Mirror(width/2, height/2 - 100, width/2 + 100, height/2 + 100);
-  const mirrorB = new Mirror(width/2, height/2 - 100, width/2 - 100, height/2 + 100);
+  const mirrorA = new Mirror(width/2 + 100, height/2 - 100, width/2 + 100, height/2 + 100);
+  const mirrorB = new Mirror(width/2 - 100, height/2 - 100, width/2 - 100, height/2 + 100);
   mirrors.push(mirrorA);
   mirrors.push(mirrorB);
+
+  observer = new Observer(width/2, height/2 + 100);
 }
 
 function draw() {
@@ -30,11 +33,13 @@ function draw() {
 
   if (source) { 
     // Cast the rays from this source on the mirror.
-    source.cast(mirrors);
+    source.cast(mirrors, observer);
 
     // Draw the source -> rays -> subrays. 
     source.draw();
   }
+
+  observer.draw();
 
   pop();
 }

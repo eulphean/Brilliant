@@ -4,13 +4,14 @@
 // Description: This is the source that emits rays. For this exercise, it'll be a point
 // light with a flexible number of "rays" that will be emited.
 
-const NUM_RAYS = 3; 
+const NUM_RAYS = 30; 
 const SOURCE_RAD = 25;
 class Source {
     constructor(x, y){
       this.pos = createVector(x, y);
       this.rays = []; 
       this.createRays();
+      this.isActive = false;
     }
 
     createRays() {
@@ -25,15 +26,15 @@ class Source {
     }
     
     draw() {
+        // Draw all the rays
+        this.rays.forEach(r => r.draw());
+
         // Draw the source
         push();
           translate(this.pos.x, this.pos.y);
           fill("red");
           ellipse(0, 0, SOURCE_RAD, SOURCE_RAD);
         pop();
-
-        // Draw all the rays
-        this.rays.forEach(r => r.draw());
     }
 
     updatePosition(mouseX, mouseY) {
@@ -41,8 +42,8 @@ class Source {
       this.createRays();
     }
 
-    cast(mirror) {
-      this.rays.forEach(r => r.cast(mirror, null, 0, 0));
+    cast(mirrors, observer) {
+      this.rays.forEach(r => r.cast(mirrors, observer, null, 0, 0));
     }
 }
   
