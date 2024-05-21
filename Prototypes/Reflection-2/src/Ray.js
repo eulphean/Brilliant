@@ -3,11 +3,8 @@
 // File: Source.js
 // Description: The core class that implements a ray of light travelling in the space.
 
-// Default ray length to draw
-const RAY_LENGTH = 10;
-
 // Maximum time a ray can be reflected off the mirrors.
-const MAX_RECURIVE_CAST = 5; 
+const MAX_RECURIVE_CAST = 1; 
 class Ray {
   constructor(x, y, angle) {
     this.startPos = createVector(x, y); // Start point for this ray.
@@ -26,13 +23,6 @@ class Ray {
     const endPos = this.heading.copy();
     endPos.setMag(5000); // Infinitely scale the ray in this direction.
     endPos.set(this.startPos.x + endPos.x, this.startPos.y + endPos.y);
-
-    // Check collision with the observer. 
-    const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.diameter, true);
-    if (hitObserver) {
-      this.observerPoint.set(observer.pos.x, observer.pos.y);
-      return;   
-    }
     
     // Detect collision with the mirrors.
     mirrors.forEach(mirror => {
@@ -56,6 +46,14 @@ class Ray {
         }
       }
     });
+
+    // Check collision with the observer. 
+    const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.collisionDiameter, true);
+    if (hitObserver) {
+      this.observerPoint.set(observer.pos.x, observer.pos.y);
+      this.dist = prevDist;
+      return;   
+    }
   }
 
   hasCollided() {
@@ -66,7 +64,8 @@ class Ray {
   draw() {
       this.drawHit();
       this.drawObserver();
-      this.drawVirtualImage();
+      this.drawVirtualImages();
+      // this.updateObserverImages();
       this.drawRay();
       this.drawSubray();
   }
@@ -87,7 +86,7 @@ class Ray {
         // Draw the hitpoint
         fill("green");
         noStroke();
-        ellipse(this.hitpoint.x, this.hitpoint.y, 7, 7);
+        ellipse(this.hitpoint.x, this.hitpoint.y, GUI_PARAMS.hitpointRadius, GUI_PARAMS.hitpointRadius);
 
         // Draw the ray to the hitpoint.
         stroke("green");
@@ -96,7 +95,7 @@ class Ray {
     pop();
   }
 
-  drawVirtualImage() {
+  drawVirtualImages() {
     // This will be drawn by extending the reflected ray. 
     push();
       if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
@@ -108,12 +107,23 @@ class Ray {
         stroke("orange");
         line(0, 0, endPos.x, endPos.y);
 
-        if (this.observerPoint.x > 0 && this.observerPoint.y > 0) {
-          fill("cyan");
-        } else {
-          fill("orange");
-        }
-        ellipse(endPos.x, endPos.y, 25, 25);
+        fill("orange");
+        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius, GUI_PARAMS.sourceRadius);
+      }
+    pop();
+  }
+
+  updateObserverImages() {
+    // Update the images seen by the observer.
+    push();
+      if (this.observerPoint.x && this.observerPoint.y > 0) {
+        translate(this.startPos.x, this.startPos.y);
+        const endPos = this.heading.copy();
+        endPos.setMag(this.dist);
+        endPos.mult(-1)
+
+        fill("magenta");
+        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius, GUI_PARAMS.sourceRadius);
       }
     pop();
   }
@@ -125,7 +135,7 @@ class Ray {
         translate(this.startPos.x, this.startPos.y);
         stroke("white");
         let endPos = this.heading.copy(); 
-        endPos.setMag(RAY_LENGTH * 2.5);
+        endPos.setMag(GUI_PARAMS.rayLength);
         line(0, 0, endPos.x, endPos.y);
       }
     pop();

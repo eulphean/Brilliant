@@ -9,6 +9,9 @@ let source;
 // reflecting mirror
 let mirrors = [];
 let observer; 
+
+// GUI
+let gui;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -19,6 +22,7 @@ function setup() {
   mirrors.push(mirrorB);
 
   observer = new Observer(width/2, height/2 + 100);
+  gui = new Gui();
 }
 
 function draw() {

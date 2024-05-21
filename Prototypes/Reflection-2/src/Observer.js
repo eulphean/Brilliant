@@ -6,14 +6,15 @@
 class Observer {
     constructor(posX, posY) {
         this.pos = createVector(posX, posY);
-        this.diameter = 20
+        this.collisionDiameter = 10
         this.isActive = false;
     }
 
     draw() {
         push();
             fill("magenta");
-            ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
+            // Render an ellipse around the collision diameter.
+            ellipse(this.pos.x, this.pos.y, this.collisionDiameter * 2, this.collisionDiameter);
         pop();
     }
 }
