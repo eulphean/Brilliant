@@ -4,7 +4,6 @@
 // Description: The core class that implements a ray of light travelling in the space.
 
 // Maximum time a ray can be reflected off the mirrors.
-const MAX_RECURIVE_CAST = 1; 
 class Ray {
   constructor(x, y, angle) {
     this.startPos = createVector(x, y); // Start point for this ray.
@@ -40,7 +39,7 @@ class Ray {
 
           // Recursively cast this ray on the mirrors. 
           // CAUTION: Ensure that the current mirror it just casted on is sent as the "previousMirror"
-          if (subcalls < MAX_RECURIVE_CAST) {
+          if (subcalls < GUI_PARAMS.maxSubrays) {
             this.subray.cast(mirrors, observer, mirror, this.dist, ++subcalls);
           }          
         }
