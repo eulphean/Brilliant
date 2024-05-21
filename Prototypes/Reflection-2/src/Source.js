@@ -42,7 +42,7 @@ class Source {
     }
 
     cast(mirror) {
-      this.rays.forEach(r => r.cast(mirror, null, 0));
+      this.rays.forEach(r => r.cast(mirror, null, 0, 0));
     }
 }
   
