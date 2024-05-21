@@ -12,8 +12,8 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
 
   // Create a mirror that will reflect the rays.
-  const mirrorA = new Mirror(width/2 + 250, height/2 - 250, width/2 + 250, height/2 + 250);
-  const mirrorB = new Mirror(width/2 - 250, height/2 - 250, width/2 - 250, height/2 + 250);
+  const mirrorA = new Mirror(width/2, height/2 - 100, width/2 + 100, height/2 + 100);
+  const mirrorB = new Mirror(width/2, height/2 - 100, width/2 - 100, height/2 + 100);
   mirrors.push(mirrorA);
   mirrors.push(mirrorB);
 }

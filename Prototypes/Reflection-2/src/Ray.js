@@ -60,7 +60,8 @@ class Ray {
       if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
         // Draw the hitpoint
         fill("green");
-        ellipse(this.hitpoint.x, this.hitpoint.y, 20, 20);
+        noStroke();
+        ellipse(this.hitpoint.x, this.hitpoint.y, 10, 10);
 
         // Draw the ray to the hitpoint.
         stroke("green");
@@ -82,7 +83,7 @@ class Ray {
         line(0, 0, endPos.x, endPos.y);
 
         fill("orange");
-        ellipse(endPos.x, endPos.y, 50, 50);
+        ellipse(endPos.x, endPos.y, 25, 25);
       }
     pop();
   }
@@ -91,9 +92,9 @@ class Ray {
     push();
       // Draw the ray that doesn't hit anything for viewing purposes.
       translate(this.startPos.x, this.startPos.y);
-      stroke("blue");
+      stroke("white");
       let endPos = this.heading.copy(); 
-      endPos.setMag(RAY_LENGTH * 10);
+      endPos.setMag(RAY_LENGTH * 2.5);
       line(0, 0, endPos.x, endPos.y);
     pop();
   }

@@ -4,8 +4,8 @@
 // Description: This is the source that emits rays. For this exercise, it'll be a point
 // light with a flexible number of "rays" that will be emited.
 
-const NUM_RAYS = 10; 
-const SOURCE_RAD = 50;
+const NUM_RAYS = 3; 
+const SOURCE_RAD = 25;
 class Source {
     constructor(x, y){
       this.pos = createVector(x, y);
