@@ -47,7 +47,7 @@ class Gui {
     }
 
     updateGuiParams() {
-        // Update GUI params
+        // RESET any changed parameters
         if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
             GUI_PARAMS.rayDensity = 12;
             GUI_PARAMS.maxSubrays = 10;
@@ -59,9 +59,16 @@ class Gui {
             GUI_PARAMS.hideRays = false;
         }
 
+        // RESET any changed parameters.
         if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {
-            GUI_PARAMS.maxSubrays = 10;
+            GUI_PARAMS.maxSubrays = 5;
             GUI_PARAMS.rayDensity = 12;
+            GUI_PARAMS.rayLength = 20;
+            GUI_PARAMS.sourceRadius = 15;
+            GUI_PARAMS.observerRadius = 15;
+            GUI_PARAMS.hitpointRadius = 5;
+            GUI_PARAMS.hideHitRays = false;
+            GUI_PARAMS.hideRays = false;
         }
 
         this.envUpdatedCbk();
