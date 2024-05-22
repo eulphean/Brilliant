@@ -8,6 +8,7 @@ class Observer {
         this.pos = createVector(posX, posY);
         this.isActive = false;
         this.collisionDiameter = 0; 
+        this.images = [];
     }
 
     draw() {
@@ -19,7 +20,7 @@ class Observer {
                 fill("magenta")
             }
             // Render an ellipse around the collision diameter.
-            ellipse(this.pos.x, this.pos.y, this.collisionDiameter, this.collisionDiameter);
+            ellipse(this.pos.x, this.pos.y, this.collisionDiameter, this.collisionDiameter/2);
         pop();
     }
 

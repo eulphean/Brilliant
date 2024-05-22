@@ -33,19 +33,16 @@ function draw() {
   rect(0, 0, width, height);
 
   push();
-  // Scale the canvas out, so we can calculate more images.  
-  mirrors.forEach(m => m.draw());
-
-  if (source) { 
+    // Scale the canvas out, so we can calculate more images.  
+    mirrors.forEach(m => m.draw());
+    
     // Cast the rays from this source on the mirror.
     source.cast(mirrors, observer);
-
     // Draw the source -> rays -> subrays. 
     source.draw();
-  }
 
-  observer.draw();
-
+    // Draw the observer
+    observer.draw();
   pop();
 }
 
