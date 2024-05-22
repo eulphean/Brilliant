@@ -65,9 +65,9 @@ class Ray {
     });
   }
 
+  // DRAW ROUTINES!
   draw() {
-    // DRAW ROUTINES!
-    this.drawSubray();
+    this.drawSubray(); // Go deep and draw the last subray first.
     this.drawHitRays();
     this.drawObserverRays();
     this.drawRay();
