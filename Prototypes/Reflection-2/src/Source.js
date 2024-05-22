@@ -44,7 +44,11 @@ class Source {
       // Draw the source
       push();
         translate(this.pos.x, this.pos.y);
-        fill("red");
+        if (this.isActive) {
+          fill("white");
+        } else {
+          fill("red");
+        }
         ellipse(0, 0, this.diameter, this.diameter);
       pop();
     }

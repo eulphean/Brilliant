@@ -14,6 +14,11 @@ class Ray {
     this.observerPoint = createVector(-1, -1); // Point at which this ray intersects with the observer
   }
 
+  hasCollided() {
+    return (this.hitpoint.x > 0 && this.hitpoint.y > 0 ||
+          this.observerPoint.x > 0 && this.observerPoint.y > 0);
+  }
+
   cast(source, mirrors, observer, prevMirror, prevDist, subcalls) {
     // Cast this ray onto the mirror, which means if this ray collides with the mirror. 
     // NOTE: We create a really long line in the "direction" of the ray to apply the collision API
@@ -23,7 +28,7 @@ class Ray {
 
     // Check collision with the observer (ensure this ray is not directly from the source)
     if (!this.startPos.equals(source.pos)) {
-      // If we collide, then return from here and don't try to collide with anything after this in the line of sight.
+      // If we collide, then return from here and don't try to collide with anything after this in its line of sight.
       const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.collisionDiameter, true);
       if (hitObserver) {
         // Save the current position as the 
@@ -60,49 +65,45 @@ class Ray {
     });
   }
 
-  hasCollided() {
-    return (this.hitpoint.x > 0 && this.hitpoint.y > 0 ||
-          this.observerPoint.x > 0 && this.observerPoint.y > 0);
-  }
-
   draw() {
-      this.drawHitRays();
-      this.drawObserverRays();
-      this.drawVirtualImages();
-      //this.updateObserverImages();
-      this.drawRay();
-      this.drawSubray();
+    // DRAW ROUTINES!
+    this.drawSubray();
+    this.drawHitRays();
+    this.drawObserverRays();
+    this.drawRay();
+    this.drawObserverImages();
+    this.drawVirtualImages();
   }
 
   drawObserverRays() {
-    push();
-      if (this.observerPoint.x > 0 && this.observerPoint.y > 0) {
+    if (this.observerPoint.x > 0 && this.observerPoint.y > 0) {
+      push();
         stroke("magenta");
         line(this.startPos.x, this.startPos.y, this.observerPoint.x, this.observerPoint.y);
-      }
-    pop();    
+      pop();
+    }
   }
 
   drawHitRays() {
-    push();
-      // Do I have a valid hitpoint?
-      if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
-        // Draw the hitpoint
-        fill("green");
-        noStroke();
-        ellipse(this.hitpoint.x, this.hitpoint.y, GUI_PARAMS.hitpointRadius, GUI_PARAMS.hitpointRadius);
+    // Do I have a valid hitpoint?
+    if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
+      push();
+      // Draw the hitpoint
+      fill("green");
+      noStroke();
+      ellipse(this.hitpoint.x, this.hitpoint.y, GUI_PARAMS.hitpointRadius, GUI_PARAMS.hitpointRadius);
 
-        // Draw the ray to the hitpoint.
-        stroke("green");
-        line(this.startPos.x, this.startPos.y, this.hitpoint.x, this.hitpoint.y);
-      } 
-    pop();
+      // Draw the ray to the hitpoint.
+      stroke("green");
+      line(this.startPos.x, this.startPos.y, this.hitpoint.x, this.hitpoint.y);
+      pop();
+    } 
   }
 
   drawVirtualImages() {
     // This will be drawn by extending the reflected ray. 
-    push();
-      if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
+    if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
+      push();
         translate(this.hitpoint.x, this.hitpoint.y);
         const endPos = this.subray.heading.copy(); // Subray's direction vector.
         endPos.setMag(this.dist);  // Scale to the distance travelled. 
@@ -112,35 +113,36 @@ class Ray {
         line(0, 0, endPos.x, endPos.y);
 
         fill("orange");
-        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius, GUI_PARAMS.sourceRadius);
-      }
-    pop();
+        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius * 2, GUI_PARAMS.sourceRadius *2);
+      pop();
+    }
   }
 
-  updateObserverImages() {
+  drawObserverImages() {
     // Update the images seen by the observer.
-    push();
-      if (this.observerPoint.x && this.observerPoint.y > 0) {
+    if (this.observerPoint.x && this.observerPoint.y > 0) {
+      push();
         translate(this.startPos.x, this.startPos.y);
         const endPos = this.heading.copy();
-        endPos.setMag(this.dist);
-        endPos.mult(-1)
+        endPos.setMag(-this.dist);
 
         fill("magenta");
-        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius, GUI_PARAMS.sourceRadius);
-      }
-    pop();
+        ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius * 2.75, GUI_PARAMS.sourceRadius * 2.75);
+      pop();
+    }
   }
 
   drawRay() {
-    push();
-      // Draw the ray that doesn't hit anything (for preview)
+    // Draw the ray that doesn't hit anything (for preview)
+    if (!this.hasCollided()) {
+      push();
       translate(this.startPos.x, this.startPos.y);
       stroke("white");
       let endPos = this.heading.copy(); 
       endPos.setMag(GUI_PARAMS.rayLength);
       line(0, 0, endPos.x, endPos.y);
-    pop();
+      pop();
+    }
   }
 
   drawSubray() {

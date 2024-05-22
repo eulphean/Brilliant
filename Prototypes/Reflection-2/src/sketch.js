@@ -75,3 +75,8 @@ function mouseDragged() {
     observer.updatePosition(mouseX, mouseY);
   }
 }
+
+function mouseReleased() {
+  source.isActive = false;
+  observer.isActive = false;
+}

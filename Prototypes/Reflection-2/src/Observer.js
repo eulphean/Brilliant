@@ -13,9 +13,13 @@ class Observer {
     draw() {
         this.collisionDiameter = GUI_PARAMS.observerRadius * 2; 
         push();
-            fill("magenta");
+            if (this.isActive) {
+                fill("white");
+            } else {
+                fill("magenta")
+            }
             // Render an ellipse around the collision diameter.
-            ellipse(this.pos.x, this.pos.y, this.collisionDiameter, this.collisionDiameter/2);
+            ellipse(this.pos.x, this.pos.y, this.collisionDiameter, this.collisionDiameter);
         pop();
     }
 
