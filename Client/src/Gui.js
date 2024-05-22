@@ -6,7 +6,7 @@
 const GUI_PARAMS = {
     title: 'Reflection Controls',
     maxSubrays: 5,
-    rayDensity: 10,
+    rayDensity: 12,
     rayLength: 20,
     sourceRadius: 10,
     observerRadius: 10,
@@ -64,8 +64,8 @@ class Gui {
         }
 
         if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {
-            GUI_PARAMS.maxSubrays = 5;
-            GUI_PARAMS.rayDensity = 10;
+            GUI_PARAMS.maxSubrays = 10;
+            GUI_PARAMS.rayDensity = 12;
         }
 
         this.envUpdatedCbk();

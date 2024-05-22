@@ -7,8 +7,6 @@
 class Source {
     constructor(x, y){
       this.pos = createVector(width/2 + x, height/2 + y);
-      this.boundsX = [0, width];
-      this.boundsY = [0, height];
 
       // Create rays
       this.rays = []; 
@@ -76,11 +74,7 @@ class Source {
 
     updatePosition(newX, newY) {
       // Check for the X bounds
-      if (newX > this.boundsX[0] && newX < this.boundsX[1]) {
-          if (newY > this.boundsY[0] && newY < this.boundsY[1]) {
-            this.pos.set(newX, newY);
-            this.createRays();
-          }
-      }
+      this.pos.set(newX, newY);
+      this.createRays();
     }
 }

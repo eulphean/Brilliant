@@ -33,23 +33,15 @@ function onEnvironmentUpdated() {
 
   // Setup components for "OBJECTIVE" environment
   if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
-    // Assign rigid bounds to the source and make it dynamic.
+    // Observer is static and source is dynamic.
     source.isStatic = false;
-    source.boundsX = [width/2 - 50 + GUI_PARAMS.sourceRadius * 2, width/2 + 50 - GUI_PARAMS.sourceRadius * 2];
-    source.boundsY = [height/2 - 75*2, height/2 + 75*2]
-
-    // Observer is static during the object.
     observer.isStatic = true;
   }
 
   // Setup components for "SANDBOX" environment
   if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {
-    // Source has wider bounds and dynamic.
+    // Source and observer are dynamic
     source.isStatic = false;
-    source.boundsX = [0, width];
-    source.boundsY = [0, height];
-
-    // Observer is also dynamic.
     observer.isStatic = false;
   }
 }
@@ -63,7 +55,7 @@ function draw() {
 
   // UPDATE components. 
   gui.update();
-  // Cast the rays from this source on the mirrors. 
+  // Points the rays from this source on the mirrors. 
   // This builds all the virtual images behind the mirrors.
   source.cast(mirrors, observer);
 
