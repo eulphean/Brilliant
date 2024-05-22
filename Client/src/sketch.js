@@ -12,6 +12,7 @@ let observer;
 
 // GUI
 let gui;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -21,10 +22,34 @@ function setup() {
   mirrors.push(mirrorA);
   mirrors.push(mirrorB);
 
-  observer = new Observer(width/2, height/2 + 100);
-  source = new Source(width/2, height/2);
-  gui = new Gui();
+  observer = new Observer(0, 100);
+  source = new Source(0, 0);
+  gui = new Gui(this.onEnvironmentUpdated.bind(this));
 }
+
+function onEnvironmentUpdated() {
+  source.updatePosition(width/2, height/2);
+  observer.updatePosition(width/2, height/2 + 100);
+
+  // Setup components for the OBJECTIVE
+  if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
+    // Assign rigid bounds to the source. 
+    source.isStatic = false;
+    source.boundsX = [width/2 - 50 + GUI_PARAMS.sourceRadius * 2, width/2 + 50 - GUI_PARAMS.sourceRadius * 2];
+    source.boundsY = [height/2 - 75*2, height/2 + 75*2]
+
+    observer.isStatic = true;
+  }
+
+  if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {
+    source.isStatic = false;
+    source.boundsX = [0, width];
+    source.boundsY = [0, height];
+
+    observer.isStatic = false;
+  }
+}
+
 
 function draw() {
   // Refresh the screen
@@ -32,18 +57,33 @@ function draw() {
   fill(0);
   rect(0, 0, width, height);
 
-  push();
-    // Scale the canvas out, so we can calculate more images.  
-    mirrors.forEach(m => m.draw());
-    
-    // Cast the rays from this source on the mirror.
-    source.cast(mirrors, observer);
-    // Draw the source -> rays -> subrays. 
-    source.draw();
+  // Update gui
+  gui.update();
+  // Cast the rays from this source on the mirror.
+  source.cast(mirrors, observer);
 
-    // Draw the observer
-    observer.draw();
-  pop();
+  // Scale the canvas out, so we can calculate more images.  
+  mirrors.forEach(m => m.draw());
+  
+  // Draw the source -> rays -> subrays. 
+  source.draw();
+
+  // Draw the observer
+  observer.draw();
+
+  if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
+    textSize(16);
+    if (source.observerImages.length === 4) {
+      fill("green")
+      text("Objective: Accompolished", width/2 - 100, height/2 + 300, 200, 100);
+    } else {
+      fill("white")
+      text("Objective: Drag the light source (red dot) to create exactly 4 virtual images visible for the observer (pink dot)", 
+        width/2 - 400, height/2 + 300, 800, 100);
+    }
+  }
+
+  source.resetImages();
 }
 
 function windowResized() {
@@ -56,19 +96,19 @@ function mousePressed() {
   
   // Did we select the source radius?
   const hitSource = collidePointCircleVector(mouse, source.pos, GUI_PARAMS.sourceRadius * 2);
-  source.isActive = hitSource;
+  source.canDrag = hitSource;
 
   // Did we select the observer?
   const hitObserver = collidePointCircleVector(mouse, observer.pos, GUI_PARAMS.observerRadius * 2);
-  observer.isActive = hitObserver;
+  observer.canDrag = hitObserver;
 }
 
 function mouseDragged() {
-  if (source.isActive) {
+  if (!source.isStatic && source.canDrag) {
     source.updatePosition(mouseX, mouseY);
   }
 
-  if (observer.isActive) {
+  if (!observer.isStatic && observer.canDrag) {
     observer.updatePosition(mouseX, mouseY);
   }
 }

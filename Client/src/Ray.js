@@ -116,15 +116,13 @@ class Ray {
 
   drawRay() {
     // Draw the ray that doesn't hit anything (for preview)
-    if (!this.hasCollided()) {
-      push();
-        translate(this.startPos.x, this.startPos.y);
-        stroke("white");
-        let endPos = this.heading.copy(); 
-        endPos.setMag(GUI_PARAMS.rayLength);
-        line(0, 0, endPos.x, endPos.y);
-      pop();
-    } 
+    push();
+      translate(this.startPos.x, this.startPos.y);
+      stroke("white");
+      let endPos = this.heading.copy(); 
+      endPos.setMag(GUI_PARAMS.rayLength);
+      line(0, 0, endPos.x, endPos.y);
+    pop();
   }
 
   drawSubray() {
@@ -134,35 +132,3 @@ class Ray {
     }
   }
 }
-
-    // this.drawObserverImages();
-// drawObserverImages() {
-//   // Update the images seen by the observer.
-//   if (this.observerPoint.x && this.observerPoint.y > 0) {
-//     push();
-//       translate(this.startPos.x, this.startPos.y);
-//       const endPos = this.heading.copy();
-//       endPos.setMag(-this.dist);
-
-//       fill("magenta");
-//       ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius * 2.75, GUI_PARAMS.sourceRadius * 2.75);
-//     pop();
-//   }
-// }
-
-// drawVirtualImages() {
-//   // This will be drawn by extending the reflected ray. 
-//   if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
-//     push();
-//       translate(this.hitpoint.x, this.hitpoint.y);
-//       const endPos = this.subray.heading.copy(); // Subray's direction vector.
-//       endPos.setMag(-this.dist);  // Scale to the distance travelled and flip it.
-
-//       stroke("orange");
-//       line(0, 0, endPos.x, endPos.y);
-
-//       // fill("orange");
-//       // ellipse(endPos.x, endPos.y, GUI_PARAMS.sourceRadius * 2, GUI_PARAMS.sourceRadius *2);
-//     pop();
-//   }
-// }
