@@ -12,14 +12,7 @@ class Ray {
     this.dist = -1; // Distance that a ray travels till it encounters a hitpoint.
     this.observerPoint = createVector(-1, -1); // Point at which this ray intersects with the observer
   }
-
-  look(mirror) {
-    const endPos = this.heading.copy();
-    endPos.setMag(5000); // Infinitely scale the ray in this direction.
-    endPos.set(this.startPos.x + endPos.x, this.startPos.y + endPos.y);
-    const hitMirror = collideLineLineVector(mirror.startPos, mirror.endPos, this.startPos, endPos, true);
-  }
-
+  
   cast(source, mirrors, observer, prevMirror, prevDist, subcalls) {
     // Cast this ray onto the mirror, which means if this ray collides with the mirror. 
     // NOTE: We create a really long line in the "direction" of the ray to apply the collision API
