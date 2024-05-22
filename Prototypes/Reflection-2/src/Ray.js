@@ -11,15 +11,30 @@ class Ray {
     this.hitpoint = createVector(-1, -1); // Point at which this ray ends. 
     this.subray = ''; // Subray created from a collision.
     this.dist = -1; // Distance that a ray travels till it encounters a hitpoint.
-    this.observerPoint = createVector(-1, -1); // Point at which this ray reaches the observer
+    this.observerPoint = createVector(-1, -1); // Point at which this ray intersects with the observer
   }
 
-  cast(mirrors, observer, prevMirror, prevDist, subcalls) {
+  cast(source, mirrors, observer, prevMirror, prevDist, subcalls) {
     // Cast this ray onto the mirror, which means if this ray collides with the mirror. 
-    // NOTE: We create a really long line in the "direction" of the ray to supply to the collision API
+    // NOTE: We create a really long line in the "direction" of the ray to apply the collision API
     const endPos = this.heading.copy();
     endPos.setMag(5000); // Infinitely scale the ray in this direction.
     endPos.set(this.startPos.x + endPos.x, this.startPos.y + endPos.y);
+
+    // Check collision with the observer (ensure this ray is not directly from the source)
+    if (!this.startPos.equals(source.pos)) {
+      // If we collide, then return from here and don't try to collide with anything after this in the line of sight.
+      const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.collisionDiameter, true);
+      if (hitObserver) {
+        // Save the current position as the 
+        this.observerPoint.set(observer.pos.x, observer.pos.y);
+        this.dist = prevDist;
+        return;   
+      } else {
+        // Reset observerPoint since it's dynamic and we don't want to save this position.
+        this.observerPoint.set(-1, -1);
+      }
+    }
     
     // Detect collision with the mirrors.
     mirrors.forEach(mirror => {
@@ -38,20 +53,11 @@ class Ray {
           // Recursively cast this ray on the mirrors. 
           // CAUTION: Ensure that the current mirror it just casted on is sent as the "previousMirror"
           if (subcalls < GUI_PARAMS.maxSubrays) {
-            this.subray.cast(mirrors, observer, mirror, this.dist, ++subcalls);
+            this.subray.cast(source, mirrors, observer, mirror, this.dist, ++subcalls);
           }          
         }
       }
     });
-
-    // Check collision with the observer. 
-    const hitObserver = collideLineCircleVector(this.startPos, endPos, observer.pos, observer.collisionDiameter, true);
-    if (hitObserver) {
-      this.observerPoint.set(observer.pos.x, observer.pos.y);
-      console.log('observer hit');
-      this.dist = prevDist;
-      return;   
-    }
   }
 
   hasCollided() {
@@ -60,24 +66,24 @@ class Ray {
   }
 
   draw() {
-      this.drawHit();
-      this.drawObserver();
+      this.drawHitRays();
+      this.drawObserverRays();
       this.drawVirtualImages();
       //this.updateObserverImages();
       this.drawRay();
       this.drawSubray();
   }
 
-  drawObserver() {
+  drawObserverRays() {
     push();
       if (this.observerPoint.x > 0 && this.observerPoint.y > 0) {
         stroke("magenta");
         line(this.startPos.x, this.startPos.y, this.observerPoint.x, this.observerPoint.y);
       }
-    pop();
+    pop();    
   }
 
-  drawHit() {
+  drawHitRays() {
     push();
       // Do I have a valid hitpoint?
       if (this.hitpoint.x > 0 && this.hitpoint.y > 0) {
@@ -129,13 +135,11 @@ class Ray {
   drawRay() {
     push();
       // Draw the ray that doesn't hit anything (for preview)
-      if (!this.hasCollided()) {
-        translate(this.startPos.x, this.startPos.y);
-        stroke("white");
-        let endPos = this.heading.copy(); 
-        endPos.setMag(GUI_PARAMS.rayLength);
-        line(0, 0, endPos.x, endPos.y);
-      }
+      translate(this.startPos.x, this.startPos.y);
+      stroke("white");
+      let endPos = this.heading.copy(); 
+      endPos.setMag(GUI_PARAMS.rayLength);
+      line(0, 0, endPos.x, endPos.y);
     pop();
   }
 

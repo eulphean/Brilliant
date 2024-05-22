@@ -55,7 +55,7 @@ class Source {
     }
 
     cast(mirrors, observer) {
-      this.rays.forEach(r => r.cast(mirrors, observer, null, 0, 0));
+      this.rays.forEach(r => r.cast(this, mirrors, observer, null, 0, 0));
     }
 }
   

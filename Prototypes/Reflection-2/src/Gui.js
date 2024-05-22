@@ -7,7 +7,7 @@ const GUI_PARAMS = {
     title: 'Reflection Controls',
     maxSubrays: 2,
     rayDensity: 10,
-    rayLength: 30,
+    rayLength: 20,
     sourceRadius: 10,
     observerRadius: 10,
     hitpointRadius: 5,
