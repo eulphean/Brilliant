@@ -31,21 +31,25 @@ function onEnvironmentUpdated() {
   source.updatePosition(width/2, height/2);
   observer.updatePosition(width/2, height/2 + 100);
 
-  // Setup components for the OBJECTIVE
+  // Setup components for "OBJECTIVE" environment
   if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
-    // Assign rigid bounds to the source. 
+    // Assign rigid bounds to the source and make it dynamic.
     source.isStatic = false;
     source.boundsX = [width/2 - 50 + GUI_PARAMS.sourceRadius * 2, width/2 + 50 - GUI_PARAMS.sourceRadius * 2];
     source.boundsY = [height/2 - 75*2, height/2 + 75*2]
 
+    // Observer is static during the object.
     observer.isStatic = true;
   }
 
+  // Setup components for "SANDBOX" environment
   if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {
+    // Source has wider bounds and dynamic.
     source.isStatic = false;
     source.boundsX = [0, width];
     source.boundsY = [0, height];
 
+    // Observer is also dynamic.
     observer.isStatic = false;
   }
 }
@@ -57,23 +61,25 @@ function draw() {
   fill(0);
   rect(0, 0, width, height);
 
-  // Update gui
+  // UPDATE components. 
   gui.update();
-  // Cast the rays from this source on the mirror.
+  // Cast the rays from this source on the mirrors. 
+  // This builds all the virtual images behind the mirrors.
   source.cast(mirrors, observer);
 
-  // Scale the canvas out, so we can calculate more images.  
+  // Draw the mirrors  
   mirrors.forEach(m => m.draw());
   
   // Draw the source -> rays -> subrays. 
   source.draw();
 
-  // Draw the observer
+  // Draw the observer.
   observer.draw();
 
+  // Text updates for 
   if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
     textSize(16);
-    if (source.observerImages.length === 4) {
+    if (observer.observerImages.length === 4) {
       fill("green")
       text("Objective: Accompolished", width/2 - 100, height/2 + 300, 200, 100);
     } else {
@@ -83,7 +89,8 @@ function draw() {
     }
   }
 
-  source.resetImages();
+  // Clean the images. 
+  observer.resetImages();
 }
 
 function windowResized() {
@@ -114,6 +121,6 @@ function mouseDragged() {
 }
 
 function mouseReleased() {
-  source.isActive = false;
-  observer.isActive = false;
+  source.canDrag = false;
+  observer.canDrag = false;
 }

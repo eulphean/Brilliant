@@ -1,7 +1,7 @@
 // Author: Amay Kataria
 // Date: 05/21/2024
 // File: Gui.js
-// Description: A global GUI to control the variables to control the aesthetic and interactive experience.
+// Description: A global GUI to control the aesthetics of the interactive experience.
 
 const GUI_PARAMS = {
     title: 'Reflection Controls',
@@ -55,6 +55,12 @@ class Gui {
         if (ENV_GUI_PARAMS.environment === ENVIRONMENT.OBJECTIVE) {
             GUI_PARAMS.rayDensity = 12;
             GUI_PARAMS.maxSubrays = 10;
+            GUI_PARAMS.rayLength = 20;
+            GUI_PARAMS.sourceRadius = 15;
+            GUI_PARAMS.observerRadius = 15;
+            GUI_PARAMS.hitpointRadius = 5;
+            GUI_PARAMS.hideHitRays = false;
+            GUI_PARAMS.hideRays = false;
         }
 
         if (ENV_GUI_PARAMS.environment === ENVIRONMENT.SANDBOX) {

@@ -40,7 +40,7 @@ class Ray {
         const imagePos = this.heading.copy();
         imagePos.setMag(-this.dist);
         const image = new ObserverImage(startPos, imagePos);
-        source.addObserverImage(image);
+        observer.addObserverImage(image);
         return;   
       } else {
         // Reset observerPoint since it's dynamic and we don't want to save this position.
@@ -69,7 +69,7 @@ class Ray {
             const imagePos = this.subray.heading.copy(); // Derived from the direction vector of the subray created after reflection.
             imagePos.setMag(-this.dist);  // Scale to the total distance travelled by this ray and flip it.
             const vi = new VirtualImage(startPos, imagePos);
-            source.addVirtualImage(vi);
+            observer.addVirtualImage(vi);
 
             // Recursively cast this ray on the mirrors. 
             // CAUTION: Ensure that the current mirror it just casted on is sent as the "previousMirror"
@@ -84,7 +84,7 @@ class Ray {
   // DRAW ROUTINES!
   draw() {
     this.drawSubray(); // Go deep and draw the last subray first.
-    this.drawObserverRay();
+    this.drawObserverRay(); // The rays that intersect with the observer.
     if (!GUI_PARAMS.hideHitRays) this.drawHitRay();
     if (!GUI_PARAMS.hideRays) this.drawRay();    
   }

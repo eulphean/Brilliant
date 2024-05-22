@@ -16,10 +16,6 @@ class Source {
       this.maxSubrays = GUI_PARAMS.maxSubrays;
       this.createRays();
 
-      // Collection of all the virtual images created.
-      this.virtualImages = [];
-      this.observerImages = [];
-
       this.diameter = GUI_PARAMS.sourceRadius * 2;
       this.canDrag = false;
       this.isStatic = false;
@@ -48,17 +44,8 @@ class Source {
       // Draw rays.
       this.rays.forEach(r => r.draw());
 
-      // Draw virtual images.
-      this.virtualImages.forEach(vi => vi.draw());
-      this.observerImages.forEach(oi => oi.draw());
-
       // Draw source blob.
       this.drawSource();
-    }
-
-    resetImages() {
-      this.virtualImages = [];
-      this.observerImages = [];
     }
 
     updateGuiParams() {
@@ -94,22 +81,6 @@ class Source {
             this.pos.set(newX, newY);
             this.createRays();
           }
-      }
-    }
-
-    addVirtualImage(image) {
-      // Check if this image is here. 
-      const found = this.virtualImages.find(vi => vi.imagePos.equals(image.imagePos))
-      if (!found) {
-        this.virtualImages.push(image)
-      }
-    }
-
-    addObserverImage(image) {
-      // Check if this image is here.
-      const found = this.observerImages.find(oi => oi.imagePos.equals(image.imagePos));
-      if (!found) {
-        this.observerImages.push(image);
       }
     }
 }
