@@ -1,6 +1,10 @@
 ![image](https://github.com/eulphean/Brilliant/assets/4178424/86c49dc7-dca9-456d-8a4a-5d8d87b04ebf)
 ## Reflection Study
-This interactive is a study of how light reflects in multi-mirror configuration. The hosted link can be found [here](https://ak-brilliant.netlify.app/).
+This interactive is a study of how light reflects in multi-mirror configuration. 
+
+The hosted link can be found [here](https://ak-brilliant.netlify.app/). 
+
+The hosted the [Notion Project](https://wary-socks-1d0.notion.site/Brilliant-Take-Home-3fe2aa2ef2254d5c91fe07cce572593b?pvs=4), which adds additional information about the submission.
 
 ### Design Inspiration
 The design of this interactive is inspired from [Ray Optics simulator](https://phydemo.app/ray-optics/simulator/) developed by [Yi-Ting Tu](https://github.com/ricktu288/ray-optics). Even though the brief was great, the
