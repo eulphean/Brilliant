@@ -25,10 +25,6 @@ const ENV_GUI_PARAMS = {
     environment: 'sandbox'
 }
 
-const OBJ_GUI_PARAMS = {
-    title: 'Objective GUI'
-}
-
 class Gui {
     constructor(onEnvUpdateCbk) {
         this.gui = new dat.GUI();

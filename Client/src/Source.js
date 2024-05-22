@@ -2,7 +2,8 @@
 // Date: 05/20/2025
 // File: Source.js
 // Description: This is the source that emits rays. For this exercise, it'll be a point
-// light with a flexible number of "rays" that will be emited.
+// light with a flexible number of "rays" that will be emited, which can be controlled from
+// the sandbox GUI.
 
 class Source {
     constructor(x, y){
@@ -13,6 +14,7 @@ class Source {
       this.numRays = GUI_PARAMS.rayDensity;
       this.maxSubrays = GUI_PARAMS.maxSubrays;
       this.createRays();
+      this.color = "red";
 
       this.diameter = GUI_PARAMS.sourceRadius * 2;
       this.canDrag = false;
@@ -61,13 +63,12 @@ class Source {
         this.maxSubrays = GUI_PARAMS.maxSubrays;
         this.createRays();
       }
-
     }
 
     drawSource() {
       push();
         if (this.canDrag && !this.isStatic) fill("white");
-        else fill("red");
+        else fill(this.color);
         ellipse(this.pos.x, this.pos.y, this.diameter, this.diameter);
       pop();
     }

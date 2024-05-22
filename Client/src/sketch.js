@@ -76,7 +76,7 @@ function draw() {
       text("Objective: Accompolished", width/2 - 100, height/2 + 300, 200, 100);
     } else {
       fill("white")
-      text("Objective: Drag the light source (red dot) to create exactly 4 virtual images visible for the observer (pink dot)", 
+      text("Objective: Drag the light source (red dot) to create 4 or more virtual images visible for the observer (pink dot)", 
         width/2 - 400, height/2 + 300, 800, 100);
     }
   }

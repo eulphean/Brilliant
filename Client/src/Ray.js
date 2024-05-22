@@ -3,7 +3,6 @@
 // File: Source.js
 // Description: The core class that implements a ray of light travelling in the space.
 
-// Maximum time a ray can be reflected off the mirrors.
 class Ray {
   constructor(x, y, angle) {
     this.startPos = createVector(x, y); // Start point for this ray.
@@ -12,12 +11,6 @@ class Ray {
     this.subray = ''; // Subray created from a collision.
     this.dist = -1; // Distance that a ray travels till it encounters a hitpoint.
     this.observerPoint = createVector(-1, -1); // Point at which this ray intersects with the observer
-    this.castMag = 0; 
-  }
-
-  hasCollided() {
-    return (this.hitpoint.x > 0 && this.hitpoint.y > 0 ||
-          this.observerPoint.x > 0 && this.observerPoint.y > 0);
   }
 
   look(mirror) {
@@ -50,18 +43,15 @@ class Ray {
         const image = new ObserverImage(startPos, imagePos);
         observer.addObserverImage(image);
         return;   
-      } else {
-        // Reset observerPoint since it's dynamic and we don't want to save this position.
-        this.observerPoint.set(-1, -1);
       }
     }
     
     // CAUTION: Don't overcall this function. It'll lead to infinite Virtual Images.
     if (subcalls < GUI_PARAMS.maxSubrays) {
+      // Find the closest mirror with which this ray collides.
       let shortestDistance = Infinity;
       let closestPos = createVector(-1, -1);
       let closestMirror = null;
-      // Find the closest mirror with which this ray collides.
       for (let mirror of mirrors) {
         // Ensure that we don't cast on the previous mirror that we just casted on.
         if (mirror !== prevMirror) {
@@ -128,6 +118,7 @@ class Ray {
 
         // Draw the ray to the hitpoint.
         stroke("green");
+        strokeWeight(2);
         line(this.startPos.x, this.startPos.y, this.hitpoint.x, this.hitpoint.y);
       pop();
     } 
@@ -151,32 +142,3 @@ class Ray {
     }
   }
 }
-
-
-      //   // Ensure that we don't cast on the previous mirror that we just casted on.
-      //   if (mirror !== prevMirror) {
-      //     // NOTE: Using p5.collision2D helper.
-      //     const hitMirror = collideLineLineVector(mirror.startPos, mirror.endPos, this.startPos, endPos, true);
-
-      //     // Do we have a valid hit point? 
-      //     // Reflect this ray off this surface.
-      //     if (hitMirror.x & hitMirror.y) {
-      //       this.hitpoint.set(hitMirror.x, hitMirror.y); // End this ray right here. 
-      //       this.dist = prevDist + this.startPos.dist(this.hitpoint); // Calc distance from startPoint to hitPoint.
-      //       this.subray = mirror.reflect(this); // Process a new ray by reflecting off the mirror.
-
-      //       // Create a "Virtual Image"
-      //       // This hitpoint will create a new virtual image. Store the startPos so we know the starting point of the ray.
-      //       const startPos = this.hitpoint.copy();
-      //       const imagePos = this.subray.heading.copy(); // Derived from the direction vector of the subray created after reflection.
-      //       imagePos.setMag(-this.dist);  // Scale to the total distance travelled by this ray and flip it.
-      //       const vi = new VirtualImage(startPos, imagePos);
-      //       observer.addVirtualImage(vi);
-
-      //       // Recursively cast this ray on the mirrors. 
-      //       // CAUTION: Ensure that the current mirror it just casted on is sent as the "previousMirror"
-      //       // CAUTION: Put a cap on how many recursive calls you can call. More the calls, more images are created.
-      //       this.subray.cast(source, mirrors, observer, mirror, this.dist, ++subcalls);  
-      //     }
-      //   }
-      // }
